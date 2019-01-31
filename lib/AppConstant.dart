@@ -1,3 +1,3 @@
-class strings {
+class AppConstant {
   static String appTitle = "FlutterWithAPICall";
 }

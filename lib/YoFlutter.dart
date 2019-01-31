@@ -3,77 +3,65 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'strings.dart';
-import 'member.dart';
+import 'AppConstant.dart';
 import 'MemberData.dart';
 
 class YoFlutter extends StatefulWidget {
   @override
-  createState() => new YoFlutterState();
+  createState() => YoFlutterState();
 }
 
 class YoFlutterState extends State<YoFlutter> {
-
   var _members = <MemberData>[];
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold (
-        appBar: new AppBar(
-          title: new Text(strings.appTitle),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(AppConstant.appTitle),
         ),
-        body: new ListView.builder(
+        body: ListView.builder(
             itemCount: _members.length * 2,
             itemBuilder: (BuildContext context, int position) {
-              if (position.isOdd) return new Divider();
+              if (position.isOdd) return Divider();
 
               final index = position ~/ 2;
 
               return _buildRow(index);
             }),
-        drawer: new Drawer(
-          child: new Material(
-            child: new ListView(
+        drawer: Drawer(
+          child: Material(
+            child: ListView(
               children: <Widget>[
-                new Container( // Fake a drawer header
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
-                  padding: new EdgeInsets.only(
-                      top: MediaQuery
-                          .of(context)
-                          .padding
-                          .top + 16.0, bottom: 16.0),
-                  child: new ListTile(
-                    leading: new Icon(Icons.watch_later,
-                        color: Theme
-                            .of(context)
-                            .primaryTextTheme
-                            .title
-                            .color),
-                    title: new Text(
-                        'Settings', style: Theme
-                        .of(context)
-                        .primaryTextTheme
-                        .title),
+                Container(
+                  // Fake a drawer header
+                  color: Theme.of(context).primaryColor,
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 16.0,
+                      bottom: 16.0),
+                  child: ListTile(
+                    leading: Icon(Icons.watch_later,
+                        color: Theme.of(context).primaryTextTheme.title.color),
+                    title: Text('Settings',
+                        style: Theme.of(context).primaryTextTheme.title),
                   ),
                 ),
-                new ListTile(
-                  leading: new Icon(Icons.alarm),
-                  title: new Text('Clock Type', textScaleFactor: 1.5),
+                ListTile(
+                  leading: Icon(Icons.alarm),
+                  title: Text('Clock Type', textScaleFactor: 1.5),
                   dense: true,
-                ), new ListTile(
-                  leading: new Icon(Icons.adb),
-                  title: new Text('Alarm', textScaleFactor: 1.5),
+                ),
+                ListTile(
+                  leading: Icon(Icons.adb),
+                  title: Text('Alarm', textScaleFactor: 1.5),
                   dense: true,
                 )
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
   _loadData() async {
@@ -89,8 +77,7 @@ class YoFlutterState extends State<YoFlutter> {
 //      print(memberArrayJSON);
 
       for (var memberJSON in membersJSON["employee"]) {
-        final member = new MemberData(
-            memberJSON["name"]);
+        final member = MemberData(memberJSON["name"]);
         print(member);
         _members.add(member);
       }
@@ -105,27 +92,25 @@ class YoFlutterState extends State<YoFlutter> {
   }
 
   Widget _buildRow(int i) {
-    return new Padding(
+    return Padding(
         padding: const EdgeInsets.all(16.0),
-        child: new ListTile(
-//            title: new Text("${_members[i].login", style: _biggerFont)
-          title: new Text("${_members[i].name}", style: _biggerFont),
-//          leading: new CircleAvatar(
+        child: ListTile(
+//            title:  Text("${_members[i].login", style: _biggerFont)
+          title: Text("${_members[i].name}", style: _biggerFont),
+//          leading:  CircleAvatar(
 //              backgroundColor: Colors.green,
-//              backgroundImage: new NetworkImage(_members[i].avatarUrl)
+//              backgroundImage:  NetworkImage(_members[i].avatarUrl)
 //          ),
-        )
-    );
-//    return new Padding(
+        ));
+//    return  Padding(
 //        padding: const EdgeInsets.all(16.0),
-//        child: new ListTile(
-//          title: new Text("${_members[i].login}", style: _biggerFont),
-//          leading: new CircleAvatar(
+//        child:  ListTile(
+//          title:  Text("${_members[i].login}", style: _biggerFont),
+//          leading:  CircleAvatar(
 //              backgroundColor: Colors.green,
-//              backgroundImage: new NetworkImage(_members[i].avatarUrl)
+//              backgroundImage:  NetworkImage(_members[i].avatarUrl)
 //          ),
 //        )
 //    );
   }
-
 }
