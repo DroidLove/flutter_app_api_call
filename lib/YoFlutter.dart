@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'AppConstant.dart';
 import 'MemberData.dart';
 
@@ -15,6 +15,7 @@ class YoFlutterState extends State<YoFlutter> {
   var _members = <MemberData>[];
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  bool _loading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +23,19 @@ class YoFlutterState extends State<YoFlutter> {
         appBar: AppBar(
           title: Text(AppConstant.appTitle),
         ),
-        body: ListView.builder(
-            itemCount: _members.length * 2,
-            itemBuilder: (BuildContext context, int position) {
-              if (position.isOdd) return Divider();
+        body: ModalProgressHUD(
+          inAsyncCall: _loading,
+          dismissible: true,
+          child: ListView.builder(
+              itemCount: _members.length * 2,
+              itemBuilder: (BuildContext context, int position) {
+                if (position.isOdd) return Divider();
 
-              final index = position ~/ 2;
+                final index = position ~/ 2;
 
-              return _buildRow(index);
-            }),
+                return _buildRow(index);
+              }),
+        ),
         drawer: Drawer(
           child: Material(
             child: ListView(
@@ -67,12 +72,14 @@ class YoFlutterState extends State<YoFlutter> {
   _loadData() async {
     String dataURL = "https://limitless-lake-93364.herokuapp.com/hello";
     http.Response response = await http.get(dataURL);
+
     setState(() {
 //      _members = JSON.decode(response.body);
 //      final membersJSON = json.decode(response.body);
       final Map membersJSON = json.decode(response.body);
 //      final List memberArrayJSON = json.decode(membersJSON["employee"].toString());
 
+      _loading = false;
       print(membersJSON["employee"]);
 //      print(memberArrayJSON);
 
