@@ -6,6 +6,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'AppConstant.dart';
 import 'MemberDataSerialize.dart';
+import 'YoFlutter.dart';
 
 class YoFlutterSerialize extends StatefulWidget {
   @override
@@ -22,53 +23,19 @@ class YoFlutterState extends State<YoFlutterSerialize> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(AppConstant.appTitle),
-        ),
-        body: ModalProgressHUD(
-          inAsyncCall: _loading,
-          dismissible: true,
-          child: ListView.builder(
-              itemCount: _members.length * 2,
-              itemBuilder: (BuildContext context, int position) {
-                if (position.isOdd) return Divider();
-
-                final index = position ~/ 2;
-
-                return _buildRow(index);
-              }),
-        ),
-        drawer: Drawer(
-          child: Material(
-            child: ListView(
-              children: <Widget>[
-                Container(
-                  // Fake a drawer header
-                  color: Theme.of(context).primaryColor,
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top + 16.0,
-                      bottom: 16.0),
-                  child: ListTile(
-                    leading: Icon(Icons.watch_later,
-                        color: Theme.of(context).primaryTextTheme.title.color),
-                    title: Text('Settings',
-                        style: Theme.of(context).primaryTextTheme.title),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.alarm),
-                  title: Text('Clock Type', textScaleFactor: 1.5),
-                  dense: true,
-                ),
-                ListTile(
-                  leading: Icon(Icons.adb),
-                  title: Text('Alarm', textScaleFactor: 1.5),
-                  dense: true,
-                )
-              ],
-            ),
-          ),
-        ));
+      appBar: AppBar(
+        title: Text(AppConstant.appTitle),
+      ),
+      body: ModalProgressHUD(
+        inAsyncCall: _loading,
+        dismissible: true,
+        child: ListView.builder(
+            itemCount: _members.length,
+            itemBuilder: (BuildContext context, int position) {
+              return _buildRow(position);
+            }),
+      ),
+    );
   }
 
   _loadData() async {
@@ -99,10 +66,24 @@ class YoFlutterState extends State<YoFlutterSerialize> {
 
   Widget _buildRow(int i) {
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListTile(
-          title: Text("${_members[i].name}", style: _biggerFont),
-//          subtitle: Text("${_members[i].age}", style: _smallerFont),
+        padding: const EdgeInsets.all(2.0),
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: Text("${_members[i].name}", style: _biggerFont),
+                subtitle:
+                    Text("Age is ${_members[i].age}", style: _smallerFont),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => YoFlutter()),
+                  );
+                },
+              )
+            ],
+          ),
         ));
   }
 }
