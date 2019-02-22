@@ -5,17 +5,18 @@ import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'AppConstant.dart';
-import 'MemberData.dart';
+import 'MemberDataSerialize.dart';
 
-class YoFlutter extends StatefulWidget {
+class YoFlutterSerialize extends StatefulWidget {
   @override
   createState() => YoFlutterState();
 }
 
-class YoFlutterState extends State<YoFlutter> {
-  var _members = <MemberData>[];
+class YoFlutterState extends State<YoFlutterSerialize> {
+  var _members = <MemberDataSerialize>[];
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  final _smallerFont = const TextStyle(fontSize: 12.0);
   bool _loading = true;
 
   @override
@@ -75,17 +76,14 @@ class YoFlutterState extends State<YoFlutter> {
     http.Response response = await http.get(dataURL);
 
     setState(() {
-//      _members = JSON.decode(response.body);
-//      final membersJSON = json.decode(response.body);
       final Map membersJSON = json.decode(response.body);
-//      final List memberArrayJSON = json.decode(membersJSON["employee"].toString());
+//      var myObject = MemberDataSerialize.fromJson(membersJSON);
 
       _loading = false;
       print(membersJSON["employee"]);
-//      print(memberArrayJSON);
 
       for (var memberJSON in membersJSON["employee"]) {
-        final member = MemberData.fromJson(memberJSON);
+        final member = MemberDataSerialize.fromJson(memberJSON);
         print(member);
         _members.add(member);
       }
@@ -103,22 +101,8 @@ class YoFlutterState extends State<YoFlutter> {
     return Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListTile(
-//            title:  Text("${_members[i].login", style: _biggerFont)
           title: Text("${_members[i].name}", style: _biggerFont),
-//          leading:  CircleAvatar(
-//              backgroundColor: Colors.green,
-//              backgroundImage:  NetworkImage(_members[i].avatarUrl)
-//          ),
+//          subtitle: Text("${_members[i].age}", style: _smallerFont),
         ));
-//    return  Padding(
-//        padding: const EdgeInsets.all(16.0),
-//        child:  ListTile(
-//          title:  Text("${_members[i].login}", style: _biggerFont),
-//          leading:  CircleAvatar(
-//              backgroundColor: Colors.green,
-//              backgroundImage:  NetworkImage(_members[i].avatarUrl)
-//          ),
-//        )
-//    );
   }
 }

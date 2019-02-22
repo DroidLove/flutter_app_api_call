@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'AppConstant.dart';
-import 'YoFlutter.dart';
+import 'YoFlutterSerialize.dart';
 
 void main() => runApp(FlutterAppApi());
 
@@ -11,7 +11,7 @@ class FlutterAppApi extends StatelessWidget {
     return MaterialApp(
       title: AppConstant.appTitle,
       theme: ThemeData(primaryColor: Colors.green.shade800),
-      home: YoFlutter(),
+      home: YoFlutterSerialize(),
     );
   }
 }
