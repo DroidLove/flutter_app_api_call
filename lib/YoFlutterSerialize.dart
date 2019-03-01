@@ -38,22 +38,21 @@ class YoFlutterState extends State<YoFlutterSerialize> {
     );
   }
 
-  _loadData() async {
+  Future<List<MemberDataSerialize>> _loadData() {
     String dataURL = "https://limitless-lake-93364.herokuapp.com/hello";
-    http.Response response = await http.get(dataURL);
-
-    setState(() {
+    return http.get(dataURL).then((response) {
       final Map membersJSON = json.decode(response.body);
-//      var myObject = MemberDataSerialize.fromJson(membersJSON);
-
       _loading = false;
       print(membersJSON["employee"]);
+
+      var members = List<MemberDataSerialize>();
 
       for (var memberJSON in membersJSON["employee"]) {
         final member = MemberDataSerialize.fromJson(memberJSON);
         print(member);
-        _members.add(member);
+        members.add(member);
       }
+      return members;
     });
   }
 
@@ -61,7 +60,11 @@ class YoFlutterState extends State<YoFlutterSerialize> {
   void initState() {
     super.initState();
 
-    _loadData();
+    _loadData().then((members) {
+      setState(() {
+        _members = members;
+      });
+    });
   }
 
   Widget _buildRow(int i) {
