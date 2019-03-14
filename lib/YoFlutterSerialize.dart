@@ -56,14 +56,34 @@ class YoFlutterState extends State<YoFlutterSerialize> {
     });
   }
 
+  Future<List<MemberDataSerialize>> _loadDataAsync() async {
+    String dataURL = "https://limitless-lake-93364.herokuapp.com/hello";
+    var response = await http.get(dataURL);
+    final Map membersJSON = json.decode(response.body);
+    _loading = false;
+    print(membersJSON["employee"]);
+
+    var members = List<MemberDataSerialize>();
+
+    for (var memberJSON in membersJSON["employee"]) {
+      final member = MemberDataSerialize.fromJson(memberJSON);
+      print(member);
+      members.add(member);
+    }
+    return members;
+  }
+
   @override
   void initState() {
     super.initState();
 
-    _loadData().then((members) {
-      setState(() {
-        _members = members;
-      });
+    wrappedMethod();
+  }
+
+  void wrappedMethod() async {
+    var response = await _loadDataAsync();
+    setState(() {
+      _members = response;
     });
   }
 
